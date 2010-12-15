@@ -44,12 +44,18 @@
   </target>
 
   <target name="release" if="env.RELEASE_VERSION">
-    <echo message="Released ${env.RELEASE_VERSION}."/>
+    <!-- update version file to release version -->
+    <echo message="${env.RELEASE_VERSION}" file="VERSION"/>
+    <exec executable="git" failonerror="true">
+      <arg line="commit -m 'Tagging the ${env.RELEASE_VERSION} release.'"/>
+    </exec>
     <exec executable="git" failonerror="true">
       <arg line="tag -a ${env.RELEASE_VERSION} -m 'Tagging the ${env.RELEASE_VERSION} release.'"/>
     </exec>
     <exec executable="git" failonerror="true">
       <arg line="push origin ${env.RELEASE_VERSION}"/>
     </exec>
+    <!-- update version file to next dev version -->
+    <!--<echo message="${env.DEVELOPMENT_VERSION}" file="VERSION"/>-->
   </target>
 </project>
