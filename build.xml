@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="php-excel" default="build" basedir=".">
+  <property environment="env"/>
+  <property name="project.name" value="php-excel"/>
+  <condition property="bat" value=".bat" else="">
+    <os family="windows" />
+  </condition>
+
+  <!-- install vendors -->
+  <target name="vendors">
+    <exec executable="svn">
+      <arg line="checkout https://phpexcel.svn.codeplex.com/svn/branches/v1.7.5/Classes/ lib/vendor/PHPExcel"/>
+    </exec>
+  </target>
+
+  <target name="clean">
+    <!-- Clean up -->
+    <delete dir="${basedir}/build"/>
+
+    <!-- Create build directories -->
+    <mkdir dir="${basedir}/build/api"/>
+    <mkdir dir="${basedir}/build/coverage"/>
+    <mkdir dir="${basedir}/build/logs"/>
+  </target>
+
+  <!-- Run unit tests and generate junit.xml and clover.xml -->
+  <target name="phpunit">
+    <exec executable="phpunit${bat}" failonerror="true"/>
+  </target>
+
+  <!-- Generate API documentation -->  
+  <target name="phpdoc">
+    <exec executable="phpdoc${bat}" failonerror="true">
+      <arg line="
+           --directory ${basedir}/lib
+           --ignore vendor/
+           --target ${basedir}/build/api
+           --defaultpackagename ${project.name}" />
+    </exec>
+  </target>
+
+  <target name="build" depends="clean,vendors,phpunit,phpdoc">
+    <antcall target="release"/>
+  </target>
+
+  <target name="release" if="env.RELEASE_VERSION">
+    <echo message="Released ${env.RELEASE_VERSION}."/>
+    <exec executable="git" failonerror="true">
+      <arg line="tag -a ${env.RELEASE_VERSION} -m 'Tagging the ${env.RELEASE_VERSION} release.'"/>
+    </exec>
+    <exec executable="git" failonerror="true">
+      <arg line="push origin ${env.RELEASE_VERSION}"/>
+    </exec>
+  </target>
+</project>
