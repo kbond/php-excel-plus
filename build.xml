@@ -39,7 +39,7 @@
     </exec>
   </target>
 
-  <target name="build" depends="clean,vendors,phpunit,phpdoc">
+  <target name="build" depends="clean,phpunit,phpdoc">
     <antcall target="release"/>
   </target>
 
