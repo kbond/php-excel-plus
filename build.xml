@@ -45,6 +45,10 @@
 
   <target name="release" if="env.RELEASE_VERSION">
     <!-- update version file to release version -->
+    <!-- create temp branch -->
+    <exec executable="git" failonerror="true">
+      <arg line="checkout -b release"/>
+    </exec>
     <echo message="${env.RELEASE_VERSION}" file="VERSION"/>
     <exec executable="git" failonerror="true">
       <arg line="commit -a -m 'Tagging the ${env.RELEASE_VERSION} release.'"/>
@@ -55,13 +59,22 @@
     <exec executable="git" failonerror="true">
       <arg line="push origin ${env.RELEASE_VERSION}"/>
     </exec>
-    <!-- update version file to next dev version -->
+
+    <!-- switch back to master and delete temp branch -->
+    <exec executable="git" failonerror="true">
+      <arg line="checkout master"/>
+    </exec>
+    <exec executable="git" failonerror="true">
+      <arg line="branch -d release"/>
+    </exec>
+
+    <!-- update version file to next dev version 
     <echo message="${env.DEVELOPMENT_VERSION}" file="VERSION"/>
     <exec executable="git" failonerror="true">
       <arg line="commit -a -m 'Updating development version to ${env.DEVELOPMENT_VERSION}'"/>
     </exec>
     <exec executable="git" failonerror="true">
       <arg line="push origin master"/>
-    </exec>
+    </exec>-->
   </target>
 </project>
