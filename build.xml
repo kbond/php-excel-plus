@@ -25,7 +25,7 @@
 
   <!-- Run unit tests and generate junit.xml and clover.xml -->
   <target name="phpunit">
-    <exec executable="phpunit${bat}" failonerror="true"/>
+    <exec executable="phpunit${bat}"/>
   </target>
 
   <!-- Generate API documentation -->  

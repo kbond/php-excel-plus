@@ -40,6 +40,6 @@ class Excel_ReaderTest extends PHPUnit_Framework_TestCase
 
   public function testSimpleHydrate()
   {
-        
+    $this->fail();
   }
 }
