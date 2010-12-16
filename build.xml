@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="php-excel" default="build" basedir=".">
+  <!-- set global properties -->
   <property environment="env"/>
-  <property name="project.name" value="php-excel"/>
   <condition property="bat" value=".bat" else="">
     <os family="windows" />
   </condition>
@@ -13,8 +13,8 @@
     </exec>
   </target>
 
-  <target name="clean">
-    <!-- Clean up -->
+  <!-- clean up -->
+  <target name="clean">    
     <delete dir="${basedir}/build"/>
 
     <!-- Create build directories -->
@@ -35,21 +35,53 @@
            --directory ${basedir}/lib
            --ignore vendor/
            --target ${basedir}/build/api
-           --defaultpackagename ${project.name}" />
+           --defaultpackagename ${ant.project.name}" />
     </exec>
   </target>
 
   <target name="build" depends="clean,phpunit,phpdoc">
+    <echo message="${env.BUILD_NUMBER}" file="BUILD_NUMBER"/>
     <antcall target="release"/>
   </target>
 
+  <!-- call if release was triggered with -->
   <target name="release" if="env.RELEASE_VERSION">
-    <echo message="Released ${env.RELEASE_VERSION}."/>
+    <!-- update version file to release version -->
+    <!-- create temp branch -->
+    <exec executable="git" failonerror="true">
+      <arg line="checkout -b release"/>
+    </exec>
+    <!-- update version file -->
+    <echo message="${env.RELEASE_VERSION}" file="VERSION"/>
+    <exec executable="git" failonerror="true">
+      <arg line="commit -a -m 'Tagging the ${env.RELEASE_VERSION} release.'"/>
+    </exec>
     <exec executable="git" failonerror="true">
       <arg line="tag -a ${env.RELEASE_VERSION} -m 'Tagging the ${env.RELEASE_VERSION} release.'"/>
     </exec>
     <exec executable="git" failonerror="true">
       <arg line="push origin ${env.RELEASE_VERSION}"/>
+    </exec>
+
+    <!-- switch back to master and delete temp branch -->
+    <exec executable="git" failonerror="true">
+      <arg line="checkout master"/>
+    </exec>
+    <exec executable="git" failonerror="true">
+      <arg line="branch -D release"/>
+    </exec>
+
+    <antcall target="update-development-version"/>
+  </target>
+
+  <target name="update-development-version" if ="env.DEVELOPMENT_VERSION">
+    <!-- update version file to next dev version -->
+    <echo message="${env.DEVELOPMENT_VERSION}" file="VERSION"/>
+    <exec executable="git" failonerror="false">
+      <arg line="commit -a -m 'Updating development version to ${env.DEVELOPMENT_VERSION}'"/>
+    </exec>
+    <exec executable="git" failonerror="true">
+      <arg line="push origin master"/>
     </exec>
   </target>
 </project>
