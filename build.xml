@@ -77,4 +77,8 @@
       <arg line="push origin master"/>
     </exec>-->
   </target>
+
+  <target name="update-development-version" if ="env.DEVELOPMENT_VERSION">
+
+  </target>
 </project>
