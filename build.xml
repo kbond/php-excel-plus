@@ -65,7 +65,7 @@
       <arg line="checkout master"/>
     </exec>
     <exec executable="git" failonerror="true">
-      <arg line="branch -d release"/>
+      <arg line="branch -D release"/>
     </exec>
 
     <!-- update version file to next dev version 
