@@ -47,7 +47,7 @@
     <!-- update version file to release version -->
     <echo message="${env.RELEASE_VERSION}" file="VERSION"/>
     <exec executable="git" failonerror="true">
-      <arg line="commit -m 'Tagging the ${env.RELEASE_VERSION} release.'"/>
+      <arg line="commit -a -m 'Tagging the ${env.RELEASE_VERSION} release.'"/>
     </exec>
     <exec executable="git" failonerror="true">
       <arg line="tag -a ${env.RELEASE_VERSION} -m 'Tagging the ${env.RELEASE_VERSION} release.'"/>
