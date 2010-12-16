@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="php-excel" default="build" basedir=".">
+  <!-- set global properties -->
   <property environment="env"/>
-  <property name="project.name" value="php-excel"/>
   <condition property="bat" value=".bat" else="">
     <os family="windows" />
   </condition>
@@ -13,8 +13,8 @@
     </exec>
   </target>
 
-  <target name="clean">
-    <!-- Clean up -->
+  <!-- clean up -->
+  <target name="clean">    
     <delete dir="${basedir}/build"/>
 
     <!-- Create build directories -->
@@ -35,20 +35,23 @@
            --directory ${basedir}/lib
            --ignore vendor/
            --target ${basedir}/build/api
-           --defaultpackagename ${project.name}" />
+           --defaultpackagename ${ant.project.name}" />
     </exec>
   </target>
 
   <target name="build" depends="clean,phpunit,phpdoc">
+    <echo message="${env.BUILD_ID}" file="BUILD_ID"/>
     <antcall target="release"/>
   </target>
 
+  <!-- call if release was triggered with -->
   <target name="release" if="env.RELEASE_VERSION">
     <!-- update version file to release version -->
     <!-- create temp branch -->
     <exec executable="git" failonerror="true">
       <arg line="checkout -b release"/>
     </exec>
+    <!-- update version file -->
     <echo message="${env.RELEASE_VERSION}" file="VERSION"/>
     <exec executable="git" failonerror="true">
       <arg line="commit -a -m 'Tagging the ${env.RELEASE_VERSION} release.'"/>
