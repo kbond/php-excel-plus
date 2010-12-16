@@ -61,7 +61,7 @@
       <arg line="commit -a -m 'Updating development version to ${env.DEVELOPMENT_VERSION}'"/>
     </exec>
     <exec executable="git" failonerror="true">
-      <arg line="push origin ${env.RELEASE_VERSION}"/>
+      <arg line="push origin master"/>
     </exec>
   </target>
 </project>
