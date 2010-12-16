@@ -40,7 +40,7 @@
   </target>
 
   <target name="build" depends="clean,phpunit,phpdoc">
-    <echo message="${env.BUILD_ID}" file="BUILD_ID"/>
+    <echo message="${env.BUILD_NUMBER}" file="BUILD_NUMBER"/>
     <antcall target="release"/>
   </target>
 
