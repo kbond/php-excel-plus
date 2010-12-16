@@ -74,7 +74,7 @@
   <target name="update-development-version" if ="env.DEVELOPMENT_VERSION">
     <!-- update version file to next dev version -->
     <echo message="${env.DEVELOPMENT_VERSION}" file="VERSION"/>
-    <exec executable="git" failonerror="true">
+    <exec executable="git" failonerror="false">
       <arg line="commit -a -m 'Updating development version to ${env.DEVELOPMENT_VERSION}'"/>
     </exec>
     <exec executable="git" failonerror="true">
