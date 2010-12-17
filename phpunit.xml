@@ -22,10 +22,7 @@
 
   <filter>
     <whitelist>
-      <directory>./lib/</directory>
-      <exclude>
-        <directory>./lib/vendor</directory>
-      </exclude>
+      <file>./lib/Excel_Reader.php</file>
     </whitelist>
   </filter>
 

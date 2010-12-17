@@ -38,7 +38,22 @@ class Excel_ReaderTest extends PHPUnit_Framework_TestCase
     $this->assertType('PHPExcel', $this->object->getPHPExcel(), 'Type correct');
   }
 
-  public function testSimpleHydrate()
+  public function testConvertToSimpleArray()
   {
+    $array = $this->object->load($this->testfile)->convertToSimpleArray();
+    
+    $this->assertEquals(5, count($array));
+    $this->assertEquals(7, $array[2]['A']);
+    $this->assertEquals(6, $array[1]['C']);
+
+    $array = $this->object->load($this->testfile)->convertToSimpleArray('test_sheet');
+    $this->assertEquals(2, count($array));
+    $this->assertEquals("foo", $array[1]['col1']);
+    $this->assertEquals(26, $array[0]['col2']);
+  }
+
+  public function testConvertToComplexArray()
+  {
+    //$array = $this->object->load($this->testfile)->convertToComplexArray();
   }
 }
