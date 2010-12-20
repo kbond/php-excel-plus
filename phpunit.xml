@@ -8,7 +8,7 @@
 
   <testsuites>
     <testsuite name="php-excel Test Suite">
-      <directory>./test/unit/</directory>
+      <directory>./test/</directory>
     </testsuite>
   </testsuites>
 
@@ -22,7 +22,7 @@
 
   <filter>
     <whitelist>
-      <file>./lib/Excel_Reader.php</file>
+      <directory>./src</directory>
     </whitelist>
   </filter>
 

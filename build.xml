@@ -9,7 +9,7 @@
   <!-- install vendors -->
   <target name="vendors">
     <exec executable="svn">
-      <arg line="checkout https://phpexcel.svn.codeplex.com/svn/branches/v1.7.5/Classes/ lib/vendor/PHPExcel"/>
+      <arg line="checkout https://phpexcel.svn.codeplex.com/svn/branches/v1.7.5/Classes/ vendor/PHPExcel"/>
     </exec>
   </target>
 
@@ -32,8 +32,7 @@
   <target name="phpdoc">
     <exec executable="phpdoc${bat}" failonerror="true">
       <arg line="
-           --directory ${basedir}/lib
-           --ignore vendor/
+           --directory ${basedir}/src
            --target ${basedir}/build/api
            --defaultpackagename ${ant.project.name}" />
     </exec>

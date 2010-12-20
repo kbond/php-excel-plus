@@ -1,16 +1,17 @@
 <?php
 
-require_once dirname(__FILE__) . '/vendor/PHPExcel/PHPExcel.php';
+require_once dirname(__FILE__) . '/../vendor/PHPExcel/PHPExcel.php';
 
 /**
- * Excel Reader class
+ * Wrapper for PHPExcel
  *
- * Loads in an excel file and perform array hydrations
+ * + Loads in an excel file
+ * + Perform array hydrations
  *
  * @package php-excel
  * @author kbond
  */
-class Excel_Reader
+class zsPHPExcel
 {
 
   /**
