@@ -38,7 +38,7 @@
     </exec>
   </target>
 
-  <target name="build" depends="clean,phpunit,phpdoc">
+  <target name="build" depends="clean,vendors,phpunit,phpdoc">
     <echo message="${env.BUILD_NUMBER}" file="BUILD_NUMBER"/>
     <antcall target="release"/>
   </target>
@@ -70,10 +70,10 @@
       <arg line="branch -D release"/>
     </exec>
 
-    <antcall target="update-development-version"/>
+    <antcall target="release.update-dev"/>
   </target>
 
-  <target name="update-development-version" if ="env.DEVELOPMENT_VERSION">
+  <target name="release.update-dev" if ="env.DEVELOPMENT_VERSION">
     <!-- update version file to next dev version -->
     <echo message="${env.DEVELOPMENT_VERSION}" file="VERSION"/>
     <exec executable="git" failonerror="false">
