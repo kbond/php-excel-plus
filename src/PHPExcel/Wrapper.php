@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../vendor/PHPExcel/PHPExcel.php';
+require_once dirname(__FILE__) . '/../../vendor/PHPExcel/PHPExcel.php';
 
 /**
  * Wrapper for PHPExcel
@@ -8,10 +8,10 @@ require_once dirname(__FILE__) . '/../vendor/PHPExcel/PHPExcel.php';
  * + Loads in an excel file
  * + Perform array hydrations
  *
- * @package php-excel
+ * @package PHPExcel
  * @author kbond
  */
-class zsPHPExcel
+class PHPExcel_Wrapper
 {
 
   /**
