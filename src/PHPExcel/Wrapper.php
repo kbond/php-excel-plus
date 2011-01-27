@@ -115,6 +115,7 @@ class PHPExcel_Wrapper
    *
    * + Cell rows/cols count (merged cells)
    * + Frozen panes split between table header/body
+   * + Bold text cells
    *
    * This is useful for maping an excel table to an html table
    *
@@ -132,7 +133,7 @@ class PHPExcel_Wrapper
     $return = array();
 
     // get frozen panes if set
-    $header = $sheet->getFreezePane();    
+    $header = $sheet->getFreezePane();
 
     /* @var $row PHPExcel_Worksheet_Row */
     foreach ($sheet->getRowIterator() as $row)
@@ -153,38 +154,63 @@ class PHPExcel_Wrapper
       /* @var $cell PHPExcel_Cell */
       foreach ($row->getCellIterator() as $cell)
       {
-        // check if cell merged
+        $info = array();
+        // check if cell merged - add rows/cols
         if ($range = $this->getMergedRange($sheet, $cell)) {
           // split range
           $range_details = PHPExcel_Cell::splitRange($range);
 
-          // check if first (top-left)
-          if ($range_details[0][0] == $cell->getCoordinate()) {
+          // check if not first cell in merged ranged (top-left)
+          if ($range_details[0][0] != $cell->getCoordinate())
+            continue;
+            
+          // get range dimension
+          $range_dimension = PHPExcel_Cell::rangeDimension($range);
+          
+          // set cols
+          if ($range_dimension[0] > 1)
+            $info['cols'] = $range_dimension[0];
 
-            // set cell value
-            $info = array('value' => $cell->getValue());
-
-            // get range dimension
-            $range_dimension = PHPExcel_Cell::rangeDimension($range);
-
-            // set cols
-            if ($range_dimension[0] > 1)
-              $info['cols'] = $range_dimension[0];
-
-            // set rows
-            if ($range_dimension[1] > 1)
-              $info['rows'] = $range_dimension[1];
-
-            $return[$table_section][$row->getRowIndex()][$cell->getColumn()] = $info;
-          }
-        } else {
-          // cell isn't merged, act normally
-          $return[$table_section][$row->getRowIndex()][$cell->getColumn()]['value'] = $cell->getValue();
+          // set rows
+          if ($range_dimension[1] > 1)
+            $info['rows'] = $range_dimension[1];
         }
+
+        // set cell value
+        $info['value'] = $cell->getValue();
+
+        // additional info
+        $info = $this->setCellInfo($info, $sheet, $row, $cell);
+        
+        $return[$table_section][$row->getRowIndex()][$cell->getColumn()] = $info;
       }
     }
-    die(var_dump($return));
+    
     return $return;
+  }
+
+  /**
+   * Add additional cell info (override to add your own)
+   *
+   * + sets bold flag
+   *
+   * @param array $info
+   * @param PHPExcel_Worksheet $sheet
+   * @param PHPExcel_Worksheet_Row $row
+   * @param PHPExcel_Cell $cell
+   */
+  public function setCellInfo($info, PHPExcel_Worksheet $sheet, PHPExcel_Worksheet_Row $row, PHPExcel_Cell $cell)
+  {
+    /* @var $style PHPExcel_Style */
+    $style = $sheet->getStyle($cell->getCoordinate());
+
+    /* @var $font PHPExcel_Style_Font */
+    $font = $style->getFont();
+
+    // set bold flag (useful for td 
+    $info['bold'] = $font->getBold();
+
+    return $info;
   }
 
   /**

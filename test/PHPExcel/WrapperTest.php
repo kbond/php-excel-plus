@@ -36,7 +36,7 @@ class PHPExcel_WrapperTest extends PHPUnit_Framework_TestCase
   {
     $this->object->load($this->testfile);
 
-    $this->assertType('PHPExcel', $this->object->getPHPExcel(), 'Type correct');
+    $this->assertInstanceOf('PHPExcel', $this->object->getPHPExcel(), 'Type correct');
   }
 
   public function testConvertToSimpleArray()
@@ -56,5 +56,11 @@ class PHPExcel_WrapperTest extends PHPUnit_Framework_TestCase
   public function testConvertToComplexArray()
   {
     $array = $this->object->load($this->testfile2)->convertToComplexArray();
+
+    $this->assertEquals(2, count($array));
+    $this->assertEquals(3, count($array['body'][3]));
+    $this->assertEquals("test3", $array['body'][3]['C']['value']);
+    $this->assertEquals(2, $array['body'][3]['C']['rows']);
+    $this->assertEquals(3, $array['body'][3]['C']['cols']);
   }
 }
