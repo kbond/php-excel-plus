@@ -23,6 +23,7 @@ class PHPExcel_WrapperTest extends PHPUnit_Framework_TestCase
   {
     $this->object = new PHPExcel_Wrapper;
     $this->testfile = dirname(__FILE__).'/../_files/simple.xls';
+    $this->testfile2 = dirname(__FILE__).'/../_files/complex.xls';
   }
   
   public function testLoad()
@@ -54,6 +55,6 @@ class PHPExcel_WrapperTest extends PHPUnit_Framework_TestCase
 
   public function testConvertToComplexArray()
   {
-    //$array = $this->object->load($this->testfile)->convertToComplexArray();
+    $array = $this->object->load($this->testfile2)->convertToComplexArray();
   }
 }

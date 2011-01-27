@@ -110,6 +110,17 @@ class PHPExcel_Wrapper
     return $return;
   }
 
+  /**
+   * Returns a complex array with the following features:
+   *
+   * + Cell rows/cols count (merged cells)
+   * + Frozen panes split between table header/body
+   *
+   * This is useful for maping an excel table to an html table
+   *
+   * @param string $sheet the name of the sheet
+   * @return array
+   */
   public function convertToComplexArray($sheet = null)
   {
     // get first sheet if none defined
@@ -118,16 +129,82 @@ class PHPExcel_Wrapper
     else
       $sheet = $this->objPHPExcel->getSheetByName($sheet);
 
-    
+    $return = array();
+
+    // get frozen panes if set
+    $header = $sheet->getFreezePane();    
+
+    /* @var $row PHPExcel_Worksheet_Row */
     foreach ($sheet->getRowIterator() as $row)
     {
+      $table_section = 'body';
+
+      // see if row is in header (above frozen pane)
+      if ($header) {
+        $header_end = PHPExcel_Cell::coordinateFromString($sheet->getFreezePane());
+        $header_end = $header_end[1];
+
+        if ($row->getRowIndex() < $header_end) {
+          // row is in table header
+          $table_section = 'head';
+        }
+      }
+
       /* @var $cell PHPExcel_Cell */
       foreach ($row->getCellIterator() as $cell)
       {
-        die(var_dump($cell->getRangeBoundaries()));
+        // check if cell merged
+        if ($range = $this->getMergedRange($sheet, $cell)) {
+          // split range
+          $range_details = PHPExcel_Cell::splitRange($range);
+
+          // check if first (top-left)
+          if ($range_details[0][0] == $cell->getCoordinate()) {
+
+            // set cell value
+            $info = array('value' => $cell->getValue());
+
+            // get range dimension
+            $range_dimension = PHPExcel_Cell::rangeDimension($range);
+
+            // set cols
+            if ($range_dimension[0] > 1)
+              $info['cols'] = $range_dimension[0];
+
+            // set rows
+            if ($range_dimension[1] > 1)
+              $info['rows'] = $range_dimension[1];
+
+            $return[$table_section][$row->getRowIndex()][$cell->getColumn()] = $info;
+          }
+        } else {
+          // cell isn't merged, act normally
+          $return[$table_section][$row->getRowIndex()][$cell->getColumn()]['value'] = $cell->getValue();
+        }
       }
     }
-    
+    die(var_dump($return));
+    return $return;
+  }
+
+  /**
+   * Check the sheet to see if the specified cell is in it's merged cell list
+   *
+   * @param PHPExcel_Worksheet $sheet
+   * @param PHPExcel_Cell $cell
+   * @return the range if found or false
+   */
+  protected function getMergedRange(PHPExcel_Worksheet $sheet, PHPExcel_Cell $cell)
+  {
+    foreach ($sheet->getMergeCells() as $range)
+    {
+      if ($cell->isInRange($range)) {
+
+        return $range;
+      }
+    }
+
+    return false;
   }
 
 }

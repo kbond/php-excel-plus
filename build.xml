@@ -9,7 +9,7 @@
   <!-- install vendors -->
   <target name="vendors">
     <exec executable="svn">
-      <arg line="checkout https://phpexcel.svn.codeplex.com/svn/branches/v1.7.5/Classes/ vendor/PHPExcel"/>
+      <arg line="checkout https://phpexcel.svn.codeplex.com/svn/trunk/Classes/ -r 65968 vendor/PHPExcel"/>
     </exec>
   </target>
 
