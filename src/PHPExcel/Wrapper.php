@@ -192,7 +192,11 @@ class PHPExcel_Wrapper
   /**
    * Add additional cell info (override to add your own)
    *
-   * + sets bold flag
+   * + bold flag
+   * + italic flag
+   * + color hex
+   * + bgcolor hex
+   * + alignment
    *
    * @param array $info
    * @param PHPExcel_Worksheet $sheet
@@ -207,10 +211,31 @@ class PHPExcel_Wrapper
     /* @var $font PHPExcel_Style_Font */
     $font = $style->getFont();
 
-    // set bold flag (useful for td 
+    /* @var $fill PHPExcel_Style_Fill */
+    $fill = $style->getFill();
+
+    /* @var $alignment PHPExcel_Style_Alignment */
+    $alignment = $style->getAlignment();
+
+    // set bold flag
     $info['bold'] = $font->getBold();
 
-    return $info;
+    // set italic flag
+    $info['italic'] = $font->getItalic();
+
+    // set underline flag
+    $info['underline'] = $font->getUnderline();
+
+    // set alignment
+    $info['align'] = $alignment->getHorizontal();
+
+    // set background color
+    $info['bgcolor'] = $fill->getStartColor()->getRGB();
+
+    // set font color
+    $info['color'] = $font->getColor()->getRGB();
+
+    return $info;    
   }
 
   /**

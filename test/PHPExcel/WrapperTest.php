@@ -63,4 +63,17 @@ class PHPExcel_WrapperTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(2, $array['body'][3]['C']['rows']);
     $this->assertEquals(3, $array['body'][3]['C']['cols']);
   }
+
+  public function testComplexArrayCellFlags()
+  {
+    $array = $this->object->load($this->testfile2)->convertToComplexArray();
+
+    // cell flags
+    $this->assertEquals(true, $array['body'][3]['C']['italic']);
+    $this->assertEquals(true, $array['body'][4]['B']['bold']);
+    $this->assertEquals(true, $array['body'][3]['A']['underline']);
+    $this->assertEquals("center", $array['head'][1]['E']['align']);
+    $this->assertEquals("0000FF", $array['head'][1]['D']['bgcolor']);
+    $this->assertEquals("FF0000", $array['head'][1]['B']['color']);
+  }
 }
