@@ -9,7 +9,7 @@
  * @package PHPExcel
  * @author kbond
  */
-class PHPExcel_Wrapper
+class PHPExcel_Plus
 {
 
   /**
