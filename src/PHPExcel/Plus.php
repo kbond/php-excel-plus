@@ -13,7 +13,7 @@ class PHPExcel_Plus
 {
 
   /**
-   * @var PHPExcel 
+   * @var PHPExcel
    */
   protected $objPHPExcel;
 
@@ -75,13 +75,11 @@ class PHPExcel_Plus
    * @param string $sheet the name of the sheet
    * @return array
    */
-  public function convertToSimpleArray($sheet = null)
+  public function convertToSimpleArray($sheet = 0)
   {
     // get first sheet if none defined
-    if (!$sheet)
-      $sheet = $this->objPHPExcel->getSheet();
-    else
-      $sheet = $this->objPHPExcel->getSheetByName($sheet);
+    $sheet = $this->objPHPExcel->getSheet($sheet);
+
 
     $rows = $sheet->toArray();
     $return = array();
@@ -120,13 +118,10 @@ class PHPExcel_Plus
    * @param string $sheet the name of the sheet
    * @return array
    */
-  public function convertToComplexArray($sheet = null)
+  public function convertToComplexArray($sheet = 0)
   {
     // get first sheet if none defined
-    if (!$sheet)
-      $sheet = $this->objPHPExcel->getSheet();
-    else
-      $sheet = $this->objPHPExcel->getSheetByName($sheet);
+    $sheet = $this->objPHPExcel->getSheet($sheet);
 
     $return = array();
 
@@ -161,10 +156,10 @@ class PHPExcel_Plus
           // check if not first cell in merged ranged (top-left)
           if ($range_details[0][0] != $cell->getCoordinate())
             continue;
-            
+
           // get range dimension
           $range_dimension = PHPExcel_Cell::rangeDimension($range);
-          
+
           // set cols
           if ($range_dimension[0] > 1)
             $info['cols'] = $range_dimension[0];
@@ -179,11 +174,11 @@ class PHPExcel_Plus
 
         // additional info
         $info = $this->setCellInfo($info, $sheet, $row, $cell);
-        
+
         $return[$table_section][$row->getRowIndex()][$cell->getColumn()] = $info;
       }
     }
-    
+
     return $return;
   }
 
@@ -233,7 +228,7 @@ class PHPExcel_Plus
     // set font color
     $info['color'] = $font->getColor()->getRGB();
 
-    return $info;    
+    return $info;
   }
 
   /**
