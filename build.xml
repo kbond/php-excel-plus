@@ -14,7 +14,7 @@
   </target>
 
   <!-- clean up -->
-  <target name="clean">    
+  <target name="clean">
     <delete dir="${basedir}/build"/>
 
     <!-- Create build directories -->
@@ -28,7 +28,7 @@
     <exec executable="phpunit${bat}"/>
   </target>
 
-  <!-- Generate API documentation -->  
+  <!-- Generate API documentation -->
   <target name="phpdoc">
     <exec executable="phpdoc${bat}" failonerror="true">
       <arg line="
@@ -38,49 +38,5 @@
     </exec>
   </target>
 
-  <target name="build" depends="clean,vendors,phpunit,phpdoc">
-    <echo message="${env.BUILD_NUMBER}" file="BUILD_NUMBER"/>
-    <antcall target="release"/>
-  </target>
-
-  <!-- call if release was triggered with -->
-  <target name="release" if="env.RELEASE_VERSION">
-    <!-- update version file to release version -->
-    <!-- create temp branch -->
-    <exec executable="git" failonerror="true">
-      <arg line="checkout -b release"/>
-    </exec>
-    <!-- update version file -->
-    <echo message="${env.RELEASE_VERSION}" file="VERSION"/>
-    <exec executable="git" failonerror="true">
-      <arg line="commit -a -m 'Tagging the ${env.RELEASE_VERSION} release.'"/>
-    </exec>
-    <exec executable="git" failonerror="true">
-      <arg line="tag -a ${env.RELEASE_VERSION} -m 'Tagging the ${env.RELEASE_VERSION} release.'"/>
-    </exec>
-    <exec executable="git" failonerror="true">
-      <arg line="push origin ${env.RELEASE_VERSION}"/>
-    </exec>
-
-    <!-- switch back to master and delete temp branch -->
-    <exec executable="git" failonerror="true">
-      <arg line="checkout master"/>
-    </exec>
-    <exec executable="git" failonerror="true">
-      <arg line="branch -D release"/>
-    </exec>
-
-    <antcall target="release.update-dev"/>
-  </target>
-
-  <target name="release.update-dev" if ="env.DEVELOPMENT_VERSION">
-    <!-- update version file to next dev version -->
-    <echo message="${env.DEVELOPMENT_VERSION}" file="VERSION"/>
-    <exec executable="git" failonerror="false">
-      <arg line="commit -a -m 'Updating development version to ${env.DEVELOPMENT_VERSION}'"/>
-    </exec>
-    <exec executable="git" failonerror="true">
-      <arg line="push origin master"/>
-    </exec>
-  </target>
+  <target name="build" depends="clean,vendors,phpunit,phpdoc" />
 </project>
