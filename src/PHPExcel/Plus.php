@@ -32,7 +32,7 @@ class PHPExcel_Plus
     /**
      * Loads in excel file
      *
-     * @param string $filename filename to load
+     * @param  string       $filename filename to load
      * @return Excel_Reader
      */
     public function load($filename)
@@ -73,7 +73,7 @@ class PHPExcel_Plus
      *      'B1' => 'B4')
      *  );
      *
-     * @param string $sheet the name of the sheet
+     * @param  string $sheet the name of the sheet
      * @return array
      */
     public function convertToSimpleArray($sheet = 0)
@@ -113,7 +113,7 @@ class PHPExcel_Plus
      *
      * This is useful for maping an excel table to an html table
      *
-     * @param string $sheet the name of the sheet
+     * @param  string $sheet the name of the sheet
      * @return array
      */
     public function convertToComplexArray($sheet = 0)
@@ -189,10 +189,10 @@ class PHPExcel_Plus
      * + bgcolor hex
      * + alignment
      *
-     * @param array $info
-     * @param PHPExcel_Worksheet $sheet
+     * @param array                  $info
+     * @param PHPExcel_Worksheet     $sheet
      * @param PHPExcel_Worksheet_Row $row
-     * @param PHPExcel_Cell $cell
+     * @param PHPExcel_Cell          $cell
      */
     public function setCellInfo($info, PHPExcel_Worksheet $sheet, PHPExcel_Worksheet_Row $row, PHPExcel_Cell $cell)
     {
@@ -232,15 +232,14 @@ class PHPExcel_Plus
     /**
      * Check the sheet to see if the specified cell is in it's merged cell list
      *
-     * @param PHPExcel_Worksheet $sheet
-     * @param PHPExcel_Cell $cell
-     * @return the range if found or false
+     * @param  PHPExcel_Worksheet $sheet
+     * @param  PHPExcel_Cell      $cell
+     * @return the                range if found or false
      */
     protected function getMergedRange(PHPExcel_Worksheet $sheet, PHPExcel_Cell $cell)
     {
         foreach ($sheet->getMergeCells() as $range) {
             if ($cell->isInRange($range)) {
-
                 return $range;
             }
         }
@@ -251,7 +250,7 @@ class PHPExcel_Plus
     /**
      * Returns the worksheet by name or number
      *
-     * @param string|int $sheet
+     * @param  string|int         $sheet
      * @return PHPExcel_Worksheet
      */
     protected function getSheet($sheet = 0)

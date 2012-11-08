@@ -6,67 +6,67 @@
  */
 class PHPExcel_PlusTest extends PHPUnit_Framework_TestCase
 {
-  /**
-   * @var PHPExcel_Plus
-   */
-  protected $object;
+    /**
+     * @var PHPExcel_Plus
+     */
+    protected $object;
 
-  protected $testfile;
-  protected $testfile2;
+    protected $testfile;
+    protected $testfile2;
 
-  /**
-   * Sets up the fixture, for example, opens a network connection.
-   * This method is called before a test is executed.
-   */
-  protected function setUp()
-  {
-    $this->object = new \PHPExcel_Plus;
-    $this->testfile = dirname(__FILE__).'/../Fixtures/simple.xls';
-    $this->testfile2 = dirname(__FILE__).'/../Fixtures/complex.xls';
-  }
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+        $this->object = new \PHPExcel_Plus;
+        $this->testfile = dirname(__FILE__) . '/../Fixtures/simple.xls';
+        $this->testfile2 = dirname(__FILE__) . '/../Fixtures/complex.xls';
+    }
 
-  public function testGetPHPExcel()
-  {
-    $this->object->load($this->testfile);
+    public function testGetPHPExcel()
+    {
+        $this->object->load($this->testfile);
 
-    $this->assertInstanceOf('PHPExcel', $this->object->getPHPExcel(), 'Type correct');
-  }
+        $this->assertInstanceOf('PHPExcel', $this->object->getPHPExcel(), 'Type correct');
+    }
 
-  public function testConvertToSimpleArray()
-  {
-    $array = $this->object->load($this->testfile)->convertToSimpleArray();
+    public function testConvertToSimpleArray()
+    {
+        $array = $this->object->load($this->testfile)->convertToSimpleArray();
 
-    $this->assertEquals(4, count($array));
-    $this->assertEquals(7, $array[3]['A']);
-    $this->assertEquals(6, $array[1]['C']);
+        $this->assertEquals(4, count($array));
+        $this->assertEquals(7, $array[3]['A']);
+        $this->assertEquals(6, $array[1]['C']);
 
-    $array = $this->object->load($this->testfile)->convertToSimpleArray('test_sheet');
-    $this->assertEquals(2, count($array));
-    $this->assertEquals("foo", $array[1]['col1']);
-    $this->assertEquals(26, $array[0]['col2']);
-  }
+        $array = $this->object->load($this->testfile)->convertToSimpleArray('test_sheet');
+        $this->assertEquals(2, count($array));
+        $this->assertEquals("foo", $array[1]['col1']);
+        $this->assertEquals(26, $array[0]['col2']);
+    }
 
-  public function testConvertToComplexArray()
-  {
-    $array = $this->object->load($this->testfile2)->convertToComplexArray();
+    public function testConvertToComplexArray()
+    {
+        $array = $this->object->load($this->testfile2)->convertToComplexArray();
 
-    $this->assertEquals(2, count($array));
-    $this->assertEquals(3, count($array['body'][3]));
-    $this->assertEquals("test3", $array['body'][3]['C']['value']);
-    $this->assertEquals(2, $array['body'][3]['C']['rows']);
-    $this->assertEquals(3, $array['body'][3]['C']['cols']);
-  }
+        $this->assertEquals(2, count($array));
+        $this->assertEquals(3, count($array['body'][3]));
+        $this->assertEquals("test3", $array['body'][3]['C']['value']);
+        $this->assertEquals(2, $array['body'][3]['C']['rows']);
+        $this->assertEquals(3, $array['body'][3]['C']['cols']);
+    }
 
-  public function testComplexArrayCellFlags()
-  {
-    $array = $this->object->load($this->testfile2)->convertToComplexArray();
+    public function testComplexArrayCellFlags()
+    {
+        $array = $this->object->load($this->testfile2)->convertToComplexArray();
 
-    // cell flags
-    $this->assertEquals(true, $array['body'][3]['C']['italic']);
-    $this->assertEquals(true, $array['body'][4]['B']['bold']);
-    $this->assertEquals('single', $array['body'][3]['A']['underline']);
-    $this->assertEquals("center", $array['head'][1]['E']['align']);
-    $this->assertEquals("0000FF", $array['head'][1]['D']['bgcolor']);
-    $this->assertEquals("FF0000", $array['head'][1]['B']['color']);
-  }
+        // cell flags
+        $this->assertEquals(true, $array['body'][3]['C']['italic']);
+        $this->assertEquals(true, $array['body'][4]['B']['bold']);
+        $this->assertEquals('single', $array['body'][3]['A']['underline']);
+        $this->assertEquals("center", $array['head'][1]['E']['align']);
+        $this->assertEquals("0000FF", $array['head'][1]['D']['bgcolor']);
+        $this->assertEquals("FF0000", $array['head'][1]['B']['color']);
+    }
 }
