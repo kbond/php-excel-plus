@@ -1,0 +1,20 @@
+{
+    "name": "zenstruck/php-excel-plus",
+    "description": "Wrapper for PHPExcel that provides abstraction for simple tasks",
+    "keywords": ["excel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kevin Bond",
+            "email": "kevinbond@gmail.com"
+        }
+    ],
+    "require": {
+        "phpexcel/phpexcel": "1.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "PHPExcel": "src"
+        }
+    }
+}

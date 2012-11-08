@@ -5,9 +5,9 @@
 </style>
 
 <?php
-require_once dirname(__FILE__) . '/../src/PHPExcel/Wrapper.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
-$excel = new PHPExcel_Wrapper;
+$excel = new \PHPExcel_Plus;
 
 $excel->load('list.xls');
 

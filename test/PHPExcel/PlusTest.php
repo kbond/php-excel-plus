@@ -12,6 +12,7 @@ class PHPExcel_PlusTest extends PHPUnit_Framework_TestCase
   protected $object;
 
   protected $testfile;
+  protected $testfile2;
 
   /**
    * Sets up the fixture, for example, opens a network connection.
@@ -19,15 +20,9 @@ class PHPExcel_PlusTest extends PHPUnit_Framework_TestCase
    */
   protected function setUp()
   {
-    $this->object = new PHPExcel_Plus;
-    $this->testfile = dirname(__FILE__).'/../_files/simple.xls';
-    $this->testfile2 = dirname(__FILE__).'/../_files/complex.xls';
-  }
-  
-  public function testLoad()
-  {
-    $this->setExpectedException('Exception');
-    $this->object->load('non existant file');
+    $this->object = new \PHPExcel_Plus;
+    $this->testfile = dirname(__FILE__).'/../Fixtures/simple.xls';
+    $this->testfile2 = dirname(__FILE__).'/../Fixtures/complex.xls';
   }
 
   public function testGetPHPExcel()
@@ -40,9 +35,9 @@ class PHPExcel_PlusTest extends PHPUnit_Framework_TestCase
   public function testConvertToSimpleArray()
   {
     $array = $this->object->load($this->testfile)->convertToSimpleArray();
-    
-    $this->assertEquals(5, count($array));
-    $this->assertEquals(7, $array[2]['A']);
+
+    $this->assertEquals(4, count($array));
+    $this->assertEquals(7, $array[3]['A']);
     $this->assertEquals(6, $array[1]['C']);
 
     $array = $this->object->load($this->testfile)->convertToSimpleArray('test_sheet');
@@ -69,7 +64,7 @@ class PHPExcel_PlusTest extends PHPUnit_Framework_TestCase
     // cell flags
     $this->assertEquals(true, $array['body'][3]['C']['italic']);
     $this->assertEquals(true, $array['body'][4]['B']['bold']);
-    $this->assertEquals(true, $array['body'][3]['A']['underline']);
+    $this->assertEquals('single', $array['body'][3]['A']['underline']);
     $this->assertEquals("center", $array['head'][1]['E']['align']);
     $this->assertEquals("0000FF", $array['head'][1]['D']['bgcolor']);
     $this->assertEquals("FF0000", $array['head'][1]['B']['color']);
