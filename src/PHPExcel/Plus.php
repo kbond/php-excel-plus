@@ -73,7 +73,7 @@ class PHPExcel_Plus
      *      'B1' => 'B4')
      *  );
      *
-     * @param  string $sheet the name of the sheet
+     * @param  string|int $sheet the name of the sheet
      * @return array
      */
     public function convertToSimpleArray($sheet = 0)
@@ -113,7 +113,7 @@ class PHPExcel_Plus
      *
      * This is useful for maping an excel table to an html table
      *
-     * @param  string $sheet the name of the sheet
+     * @param  string|int $sheet the name of the sheet
      * @return array
      */
     public function convertToComplexArray($sheet = 0)
@@ -193,6 +193,8 @@ class PHPExcel_Plus
      * @param PHPExcel_Worksheet     $sheet
      * @param PHPExcel_Worksheet_Row $row
      * @param PHPExcel_Cell          $cell
+     *
+     * @return mixed
      */
     public function setCellInfo($info, PHPExcel_Worksheet $sheet, PHPExcel_Worksheet_Row $row, PHPExcel_Cell $cell)
     {
@@ -232,9 +234,10 @@ class PHPExcel_Plus
     /**
      * Check the sheet to see if the specified cell is in it's merged cell list
      *
-     * @param  PHPExcel_Worksheet $sheet
-     * @param  PHPExcel_Cell      $cell
-     * @return the                range if found or false
+     * @param PHPExcel_Worksheet $sheet
+     * @param PHPExcel_Cell      $cell
+     *
+     * @return mixed the range if found or false
      */
     protected function getMergedRange(PHPExcel_Worksheet $sheet, PHPExcel_Cell $cell)
     {
